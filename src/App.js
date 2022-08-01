@@ -1,7 +1,9 @@
 import React, { useRef, useState } from 'react'
+import { Simulate } from 'react-dom/test-utils';
 import Geogebra from 'react-geogebra'
 import { evaluate } from './Components'
-import { GeneticAlgorithm,  } from "./GeneticAlgorithm";
+import { GeneticAlgorithm } from "./GeneticAlgorithm";
+import { SimulatedAnnealing } from "./SimulatedAnnealing";
 
 function App() {
     const ref = useRef(null);
@@ -56,8 +58,8 @@ function App() {
     }
 
     return (
-        <div className="min-h-screen flex flex-col items-center md:flex-row">
-            <div className="p-6">
+        <div className="min-h-screen flex flex-col md:flex-row items-center justify-center">
+            <div className="p-10">
                 <Geogebra
                     id="mainDisplay"
                     width="500"
@@ -71,7 +73,7 @@ function App() {
             </div>
 
 
-            <div>
+            <div className="ml-10">
                 <div className="py-2 w-half flex flex-col">
                     <div className={functionValid ? "text-green-500" : "text-red-500"}>
                         Equation (in terms of x and y):
@@ -85,7 +87,9 @@ function App() {
                     Note: Right Click for Zoom to Fit
                 </div>
 
-                <GeneticAlgorithm appletLoaded={appletLoaded} functionEquation={functionEquation} functionValid={functionValid} dimension={dimension}/>
+                {/*<GeneticAlgorithm appletLoaded={appletLoaded} functionEquation={functionEquation} functionValid={functionValid} dimension={dimension}/>*/}
+                <SimulatedAnnealing appletLoaded={appletLoaded} functionEquation={functionEquation} functionValid={functionValid} dimension={dimension}/>
+
             </div>
 
             
