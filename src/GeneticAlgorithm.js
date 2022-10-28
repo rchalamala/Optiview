@@ -19,18 +19,20 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
     const [population, setPopulation] = useState([]);
     const [populationLabels, setPopulationLabels] = useState([]);
 
-    const reset = useCallback((iterations, populationLabels) => {
+    const reset = useCallback(() => {
         if(iterations) {
             removePoints(populationLabels);
             setPopulation([]);
             setPopulationLabels([]);
             setIterations(0);
         }
-    }, []);
+    }, [iterations, populationLabels]);
 
     useEffect(() => {
-        reset();
-    }, [functionEquation, reset])
+        setPopulation([]);
+        setPopulationLabels([]);
+        setIterations(0);
+    }, [functionEquation])
 
     useEffect(() => {
         setParametersValid(functionValid && lowerBoundValid && upperBoundValid && populationSizeValid && eliteCountValid && crossoverProbabilityValid && boundsValid && algorithmParametersValid);
@@ -48,7 +50,7 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
             setLowerBoundValid(false);
             setBoundsValid(true);
         }
-        reset(iterations, populationLabels);
+        reset();
     }
     
     const processUpperBound = (event) => {
@@ -63,7 +65,7 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
             setUpperBoundValid(false);
             setBoundsValid(true);
         }
-        reset(iterations, populationLabels);
+        reset();
     }
 
     const processPopulationSize = (event) => {
@@ -78,7 +80,7 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
             setPopulationSizeValid(false);
             setAlgorithmParametersValid(true);
         }
-        reset(iterations, populationLabels);
+        reset();
     }
 
     const processEliteCount = (event) => {
@@ -93,7 +95,7 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
             setEliteCountValid(false);
             setAlgorithmParametersValid(true);
         }
-        reset(iterations, populationLabels);
+        reset();
     }
 
     const processCrossoverProbability = (event) => {
@@ -108,7 +110,7 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
             setCrossoverProbabilityValid(false);
             setAlgorithmParametersValid(true);
         }
-        reset(iterations, populationLabels);
+        reset();
     }
 
     const initializePopulation = (populationSize) => {
@@ -130,7 +132,7 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
         let child1 = [];
         let child2 = [];
     
-        let a = 0.5;
+        let a = 0.15;
     
         for (let i = 0; i < dimension - 1; ++i) {
             let d = Math.abs(parent1[i] - parent2[i]);
@@ -144,6 +146,7 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
         return [child1, child2];
     }
     
+    // Find better mutation function
     const mutate = (parent) => {
         let child = [];
     
@@ -158,6 +161,7 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
     
         return child;
     }
+    
     // -cos(x)*cos(y)*e^(-((x)-pi)^2-((y)-pi)^2) [-100, 100]
     // -(1+cos(12*sqrt(x^2+y^2)))/(0.5*(x^2+y^2)+2) [-5.12, 5.12]
     const evolve = () => {
@@ -189,10 +193,6 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
     
         for (let i = 0; i < populationSize; ++i) {
             newPopulation[i] = currentPopulation[indices[i]];
-            if (i === 0) {
-                console.log(currentPopulation[indices[i]]);
-                console.log(currentPopulationFitness[indices[i]]);
-            }
             currentPopulationFitness[i] = 1 / Math.sqrt(i + 1);
         }
     
@@ -254,7 +254,7 @@ export function GeneticAlgorithm({appletLoaded, functionEquation, functionValid,
     }
 
     const processReset = () => {
-        reset(iterations, populationLabels);
+        reset();
     }
 
     return (

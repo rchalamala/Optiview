@@ -23,7 +23,7 @@ function evaluate(functionEquation, x) {
 }
 
 function randomNumberInRange(minimum, maximum) {
-    console.log("Random number generated");
+    // console.log("Random number generated");
 
     return minimum + Math.random() * (maximum - minimum);
 }
