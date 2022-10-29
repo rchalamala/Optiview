@@ -11,7 +11,7 @@ function App() {
     const [functionEquationLabel, setFunctionEquationLabel] = useState("");
     const [functionValid, setFunctionValid] = useState(false);
     const [dimension, setDimension] = useState(2);
-    const [algorithm, setAlgorithm] = useState("");
+    const [algorithm, setAlgorithm] = useState("Genetic Algorithm");
 
     const appletOnLoad = () => {
         const app = window.mainDisplay;
