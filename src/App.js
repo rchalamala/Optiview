@@ -1,8 +1,25 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Geogebra from "react-geogebra";
 import { evaluate } from "./Components";
 import { GeneticAlgorithm } from "./GeneticAlgorithm";
 import { ParticleSwarmOptimization } from "./ParticleSwarmOptimization";
+
+function useWindowSize() {
+  const [size, setSize] = useState([window.innerWidth, window.innerHeight]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setSize([window.innerWidth, window.innerHeight]);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  return size;
+}
 
 function App() {
   const ref = useRef(null);
@@ -12,6 +29,7 @@ function App() {
   const [functionValid, setFunctionValid] = useState(false);
   const [dimension, setDimension] = useState(2);
   const [algorithm, setAlgorithm] = useState("Genetic Algorithm");
+  const [width, height] = useWindowSize();
 
   const appletOnLoad = () => {
     const app = window.mainDisplay;
@@ -22,7 +40,8 @@ function App() {
 
     // console.log("Applet Loaded");
   };
-  const changeFunction = (event) => {
+
+  const changeFunction = (newFunctionEquation) => {
     const app = window.mainDisplay;
 
     let objectNames = app.getAllObjectNames();
@@ -31,20 +50,20 @@ function App() {
       app.deleteObject(objectNames[i]);
     }
 
-    setFunctionEquation(event.target.value);
+    setFunctionEquation(newFunctionEquation);
 
-    setFunctionEquationLabel(app.evalCommandGetLabels(event.target.value));
+    setFunctionEquationLabel(app.evalCommandGetLabels(newFunctionEquation));
 
     const selected = ref.current;
 
-    if (event.target.value.search("y") === -1) {
+    if (newFunctionEquation.search("y") === -1) {
       if (dimension !== 2) {
         setDimension(2);
         app.setPerspective("G");
       }
       setFunctionValid(
-        evaluate(event.target.value, [0]) !== "" &&
-          !isNaN(evaluate(event.target.value, [0])),
+        evaluate(newFunctionEquation, [0]) !== "" &&
+          !isNaN(evaluate(newFunctionEquation, [0])),
       );
     } else {
       if (dimension === 2) {
@@ -52,8 +71,8 @@ function App() {
         app.setPerspective("T");
       }
       setFunctionValid(
-        evaluate(event.target.value, [0, 0]) !== "" &&
-          !isNaN(evaluate(event.target.value, [0, 0])),
+        evaluate(newFunctionEquation, [0, 0]) !== "" &&
+          !isNaN(evaluate(newFunctionEquation, [0, 0])),
       );
     }
 
@@ -96,11 +115,12 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center">
-      <div className="p-10">
+      <div className="w-10/12">
         <Geogebra
           id="mainDisplay"
-          width="500"
-          height="500"
+          key={`${width}-${height}`}
+          width={parseInt(width * 0.833)}
+          height={parseInt(height * 0.98)}
           showMenuBar={false}
           showToolBar={false}
           appletOnLoad={appletOnLoad}
@@ -109,7 +129,7 @@ function App() {
         />
       </div>
 
-      <div className="ml-10">
+      <div className="w-2/12 mx-10">
         <div className="py-2 w-half flex flex-col">
           <div className={functionValid ? "text-green-500" : "text-red-500"}>
             Equation (in terms of x and y):
@@ -118,13 +138,13 @@ function App() {
             className="border rounded px-2"
             type="text"
             value={functionEquation}
-            onChange={changeFunction}
+            onChange={(event) => changeFunction(event.target.value)}
             ref={ref}
             disabled={!appletLoaded}
           />
         </div>
 
-        <div className="pb-2">Note: Right Click for Zoom to Fit</div>
+        <div className="pb-2">Right Click for Zoom to Fit</div>
 
         <select value={algorithm} onChange={changeAlgorithm}>
           <option value="Genetic Algorithm">Genetic Algorithm</option>
