@@ -1,3 +1,3 @@
-## Visualizing the procedures of metaheuristic algorithms for convex function optimization using React, JavaScript, TailwindCSS, and the Geogebra API.
+## Metaheuristic Optimization in 2D and 3D
 
-[https://optimization-algorithm-visualizer.netlify.app/](https://optimization-algorithm-visualizer.netlify.app/)
+Built with React.js, JavaScript, and the Geogebra API.
