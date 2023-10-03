@@ -146,7 +146,7 @@ function App() {
 
         <div className="pb-2">Right Click for Zoom to Fit</div>
 
-        <select value={algorithm} onChange={changeAlgorithm}>
+        <select className="w-full" value={algorithm} onChange={changeAlgorithm}>
           <option value="Genetic Algorithm">Genetic Algorithm</option>
           <option value="Particle Swarm Optimization">
             Particle Swarm Optimization

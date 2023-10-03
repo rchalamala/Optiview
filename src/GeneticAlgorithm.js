@@ -430,7 +430,7 @@ export function GeneticAlgorithm({
 
       <div className="py-4">
         <button
-          className="border rounded px-2"
+          className="border rounded px-2 w-full"
           onClick={processEvolve}
           disabled={!parametersValid}
         >
@@ -440,7 +440,7 @@ export function GeneticAlgorithm({
 
       <div className="pb-4">
         <button
-          className="border rounded px-2"
+          className="border rounded px-2 w-full"
           onClick={processReset}
           disabled={!appletLoaded}
         >
