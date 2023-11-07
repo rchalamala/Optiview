@@ -115,7 +115,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col md:flex-row items-center justify-center">
-      <div className="w-10/12">
+      <div className="w-3/4">
         <Geogebra
           id="mainDisplay"
           key={`${width}-${height}`}
@@ -129,7 +129,7 @@ function App() {
         />
       </div>
 
-      <div className="w-2/12 mx-10">
+      <div className="w-1/4 mx-10">
         <div className="py-2 w-half flex flex-col">
           <div className={functionValid ? "text-green-500" : "text-red-500"}>
             Equation (in terms of x and y):
